@@ -1,1 +1,43 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prescrições - Vanessa</title>
+  <style>
+    body{font-family:Arial, sans-serif;background:#0f172a;color:#fff;padding:20px}
+    h1{margin:0 0 12px}
+    input{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#111827;color:#fff;font-size:16px}
+    ul{list-style:none;padding:0;margin-top:16px}
+    li{padding:10px 0;border-bottom:1px solid #334155}
+    a{color:#38bdf8;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .sub{color:#94a3b8;margin:0 0 18px}
+  </style>
+</head>
+<body>
+  <h1>📋 Prescrições</h1>
+  <p class="sub">Buscar rápido no plantão (A-Z).</p>
 
+  <input id="busca" type="text" placeholder="Digite para buscar... (ex: asma, anafilaxia)" onkeyup="filtrar()" />
+
+  <ul id="lista">
+    <li><a href="#">Anafilaxia</a></li>
+    <li><a href="#">Asma – Crise</a></li>
+    <li><a href="#">Bronquiolite</a></li>
+    <li><a href="#">Hipoglicemia</a></li>
+    <li><a href="#">ITU na criança</a></li>
+  </ul>
+
+  <script>
+    function filtrar(){
+      const termo = document.getElementById("busca").value.toUpperCase();
+      const itens = document.querySelectorAll("#lista li");
+      itens.forEach(li=>{
+        const txt = li.innerText.toUpperCase();
+        li.style.display = txt.includes(termo) ? "" : "none";
+      });
+    }
+  </script>
+</body>
+</html>
