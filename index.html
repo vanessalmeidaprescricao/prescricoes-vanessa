@@ -6,37 +6,80 @@
   <title>Prescrições - Vanessa</title>
   <style>
     body{font-family:Arial, sans-serif;background:#0f172a;color:#fff;padding:20px}
-    h1{margin:0 0 12px}
-    input{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#111827;color:#fff;font-size:16px}
-    ul{list-style:none;padding:0;margin-top:16px}
-    li{padding:10px 0;border-bottom:1px solid #334155}
-    a{color:#38bdf8;text-decoration:none}
-    a:hover{text-decoration:underline}
+    h1{margin:0 0 10px}
     .sub{color:#94a3b8;margin:0 0 18px}
+    input{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#111827;color:#fff;font-size:16px}
+    .grid{margin-top:16px;display:grid;gap:12px}
+    .card{border:1px solid #334155;border-radius:12px;background:#0b1220;padding:12px}
+    .top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .title{font-weight:700;font-size:18px}
+    button{padding:8px 10px;border:none;border-radius:10px;background:#38bdf8;color:#000;font-weight:700;cursor:pointer}
+    pre{white-space:pre-wrap;margin:10px 0 0;background:#111827;border-radius:10px;padding:12px;border:1px solid #1f2937}
+    .tag{font-size:12px;color:#94a3b8;border:1px solid #334155;border-radius:999px;padding:3px 8px}
   </style>
 </head>
 <body>
   <h1>📋 Prescrições</h1>
-  <p class="sub">Buscar rápido no plantão (A-Z).</p>
+  <p class="sub">Buscar rápido no plantão (A-Z). Digite para filtrar.</p>
 
-  <input id="busca" type="text" placeholder="Digite para buscar... (ex: asma, anafilaxia)" onkeyup="filtrar()" />
+  <input id="busca" type="text" placeholder="Buscar... (ex: asma, anafilaxia, ITU)" onkeyup="filtrar()" />
 
-  <ul id="lista">
-   <li><a href="anafilaxia.html">Anafilaxia</a></li>
-    <li><a href="#">Asma – Crise</a></li>
-    <li><a href="#">Bronquiolite</a></li>
-    <li><a href="#">Hipoglicemia</a></li>
-    <li><a href="#">ITU na criança</a></li>
-  </ul>
+  <div class="grid" id="cards">
+
+    <!-- 🔽 COLE SUAS PRESCRIÇÕES AQUI (um card por prescrição) -->
+
+    <div class="card" data-title="Anafilaxia">
+      <div class="top">
+        <div class="title">Anafilaxia</div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <span class="tag">Pediatria</span>
+          <button onclick="copiar(this)">Copiar</button>
+        </div>
+      </div>
+      <pre>
+Adrenalina 1:1000 – 0,01 mg/kg IM (máx 0,5 mg)
+Oxigênio sob máscara
+SF 20 ml/kg EV se hipotensão
+Corticoide / anti-histamínico conforme protocolo
+      </pre>
+    </div>
+
+    <div class="card" data-title="Asma – Crise">
+      <div class="top">
+        <div class="title">Asma – Crise</div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <span class="tag">Pediatria</span>
+          <button onclick="copiar(this)">Copiar</button>
+        </div>
+      </div>
+      <pre>
+Salbutamol spray com espaçador: 2–4 jatos, repetir conforme resposta
+Corticoide VO conforme peso
+Oxigênio se SatO2 &lt; 94%
+      </pre>
+    </div>
+
+    <!-- 🔼 COLE SUAS PRESCRIÇÕES AQUI -->
+
+  </div>
 
   <script>
     function filtrar(){
-      const termo = document.getElementById("busca").value.toUpperCase();
-      const itens = document.querySelectorAll("#lista li");
-      itens.forEach(li=>{
-        const txt = li.innerText.toUpperCase();
-        li.style.display = txt.includes(termo) ? "" : "none";
+      const termo = document.getElementById("busca").value.toUpperCase().trim();
+      const cards = document.querySelectorAll(".card");
+      cards.forEach(c=>{
+        const t = (c.getAttribute("data-title") || "").toUpperCase();
+        const full = c.innerText.toUpperCase();
+        c.style.display = (t.includes(termo) || full.includes(termo)) ? "" : "none";
       });
+    }
+
+    function copiar(btn){
+      const card = btn.closest(".card");
+      const titulo = card.querySelector(".title").innerText.trim();
+      const texto = card.querySelector("pre").innerText.trim();
+      navigator.clipboard.writeText(titulo + "\n\n" + texto);
+      alert("Copiado: " + titulo);
     }
   </script>
 </body>
